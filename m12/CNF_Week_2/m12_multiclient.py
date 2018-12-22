@@ -13,20 +13,21 @@ def Main():
     while message != 'Q':
 
         s.send(message.encode())
-        valid = s.recv(1024).decode()
-        if str(valid) == 'ROLLNUMBER-NOTFOUND':
+        valid = ""
+        valid = (s.recv(1024).decode())
+        if valid == "ROLLNUMBER-NOTFOUND":
             print("ROLLNUMBER-NOTFOUND")
         else:
             print("ROLLNUMBER-FOUND")
             
             while True:
-                q = str(s.recv(1024).decode())
+                q = (s.recv(1024).decode())
                 print("Question from server is" +q)
                 print("Enter your answer")
                 ca = input()
                 s.send(ca.encode())
-                valid = s.recv(1024)
-                valid = str(valid.decode())
+                valid = s.recv(1024).decode()
+            
                 if valid == "ATTENDANCE SUCCESS":
                     break;
                 else:

@@ -1,9 +1,8 @@
 import socket
 import threading
-import random
-import time
-from threading import *
+from _thread import *
 import csv
+
 def Main():
     loc = ("F://recyle bin//MSIT//cnf//m12//CNF_Week_2//data.csv")
     rows = []
@@ -40,41 +39,41 @@ def Main():
         c, addr = s.accept()
         print("Connected Server" +str(addr))
         
-        start_new_thread(clientsThread,(c,x))
-def clientsThread(c):
+        start_new_thread(clientsThread,(c, rows))
+def clientsThread(c, rows):
 
     while True:
         data = c.recv(1024)
         if not data:
             break
         if data.decode() == 'Q':
-            return
+            break
         value = int(data.decode())
         flag = 0
         for row in rows:
-            if row[0] == value:
+            if int(row[0]) == value:
                 flag = 1
                 q = row[1]
                 a = row[2]
         if flag == 0:
-            str = "ROLLNUMBER-NOTFOUND"
-            c.send(str.encode())
+            str1 = "ROLLNUMBER-NOTFOUND"
+            c.send(str1.encode())
         else:
-            str = "ROLLNUMBER-FOUND"
+            str1 = "ROLLNUMBER-FOUND"
             #print("sending question")
-            c.send(str.encode())
+            c.send(str1.encode())
             while True:
                 print("sending question")
 
                 c.send(q.encode())
-                ca = c.recv(1024)
-                if a == str(ca.decode()):
-                    str = "ATTENDANCE SUCCESS"
-                    c.send(str.encode())
+                ca = c.recv(1024).decode()
+                if a == (ca):
+                    str1 = "ATTENDANCE SUCCESS"
+                    c.send(str1.encode())
                     break;
                 else:
-                    str = "ATTENDANCE FAILURE"
-                    c.send(str.encode())
+                    str1 = "ATTENDANCE FAILURE"
+                    c.send(str1.encode())
 
 
 
